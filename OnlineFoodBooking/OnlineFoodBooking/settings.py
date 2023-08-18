@@ -29,7 +29,7 @@ DEBUG = config('DEBUG', cast = bool)
 
 ALLOWED_HOSTS = []
 
-# AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'accounts.User'
 
 
 # Application definition
@@ -154,6 +154,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Add other directories here if needed
 ]
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 
 
 

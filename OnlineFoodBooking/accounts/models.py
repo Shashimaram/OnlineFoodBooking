@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -8,7 +9,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("user must have an email address")
     
-        if not user_name:
+        if not username:
             raise ValueError("user must have a username")
     
         user = self.model(
@@ -22,7 +23,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self,first_name, last_name, username, email,password=None):
-        user=self.create_superuser(
+        user=self.create_user(
             email= self.normalize_email(email),
             username = username,
             first_name=first_name,
@@ -35,6 +36,7 @@ class UserManager(BaseUserManager):
         user.is_superadmin = True
         user.save(using = self._db)
         return user
+    
 
 class User(AbstractBaseUser):
     RESTAURANT = 1
@@ -46,7 +48,7 @@ class User(AbstractBaseUser):
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    usernamae= models.CharField(max_length=50, unique= True)
+    username= models.CharField(max_length=50, unique= True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=100, unique=True)
     roles = models.PositiveSmallIntegerField(choices=ROLE_CHOICES,blank=True, null=True)
@@ -63,7 +65,7 @@ class User(AbstractBaseUser):
 
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'firstname','lastname',]
+    REQUIRED_FIELDS = ['username', 'first_name','last_name',]
 
     def __str__(self) -> str:
         return self.email 
@@ -73,8 +75,25 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_lable):
         return True
+    
+    objects = UserManager()
+    
 
 
-# class mymodel(models.Model):
-# text = models.CharField(max_length=199)
-# name = models.CharField(max_length=200)
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank= True, null=True)
+    profile_picture = models.ImageField(upload_to='users/profile_picture',blank=True, null=True)
+    cover_picture = models.ImageField(upload_to='users/cover_picture',blank=True, null=True)
+    address_line_1 = models.CharField(max_length=50, blank=True, null= True)
+    address_line_2 = models.CharField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=20, blank= True, null=True)
+    state = models.CharField(max_length=20, blank=True, null=True)
+    city = models.CharField(max_length=20, blank=True, null=True)
+    pin_code = models.CharField(max_length=6, blank=True, null=True)
+    latitude = models.CharField(max_length=20, blank=True, null=True)
+    longitude = models.CharField(max_length=20, blank=True, null=True)
+    created_At = models.DateField(auto_now_add=True)
+    modified_At = models.DateField(auto_now=True)
+    
+    def __str__(self): return self.user.email
