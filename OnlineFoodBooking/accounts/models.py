@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import User
-
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 # Create your models here.
 
 class UserManager(BaseUserManager):
@@ -50,9 +51,8 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=50)
     username= models.CharField(max_length=50, unique= True)
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=100, unique=True)
+    phone_number = models.CharField(max_length=10)
     roles = models.PositiveSmallIntegerField(choices=ROLE_CHOICES,blank=True, null=True)
-
     # required fields
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
@@ -62,7 +62,6 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
-
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name','last_name',]
@@ -77,9 +76,6 @@ class User(AbstractBaseUser):
         return True
     
     objects = UserManager()
-    
-
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank= True, null=True)
@@ -97,3 +93,4 @@ class UserProfile(models.Model):
     modified_At = models.DateField(auto_now=True)
     
     def __str__(self): return self.user.email
+
