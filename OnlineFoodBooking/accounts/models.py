@@ -9,10 +9,10 @@ class UserManager(BaseUserManager):
     def create_user(self,first_name, last_name, username, email,password=None):
         if not email:
             raise ValueError("user must have an email address")
-    
+
         if not username:
             raise ValueError("user must have a username")
-    
+
         user = self.model(
             email = self.normalize_email(email),
             username = username,
@@ -37,13 +37,13 @@ class UserManager(BaseUserManager):
         user.is_superadmin = True
         user.save(using = self._db)
         return user
-    
+
 
 class User(AbstractBaseUser):
-    RESTAURANT = 1
+    VENDOR = 1
     CUSTOMER = 2
     ROLE_CHOICES = (
-        (RESTAURANT,'Restaurant'),
+        (VENDOR,'Vendor'),
         (CUSTOMER,'Customer'),
     )
 
@@ -52,7 +52,7 @@ class User(AbstractBaseUser):
     username= models.CharField(max_length=50, unique= True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=10)
-    roles = models.PositiveSmallIntegerField(choices=ROLE_CHOICES,blank=True, null=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES,blank=True, null=True)
     # required fields
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
@@ -67,14 +67,14 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['username', 'first_name','last_name',]
 
     def __str__(self) -> str:
-        return self.email 
+        return self.email
 
     def has_perm(self, perm, obj = None):
         return self.is_admin
 
     def has_module_perms(self, app_lable):
         return True
-    
+
     objects = UserManager()
 
 class UserProfile(models.Model):
@@ -91,6 +91,6 @@ class UserProfile(models.Model):
     longitude = models.CharField(max_length=20, blank=True, null=True)
     created_At = models.DateField(auto_now_add=True)
     modified_At = models.DateField(auto_now=True)
-    
+
     def __str__(self): return self.user.email
 

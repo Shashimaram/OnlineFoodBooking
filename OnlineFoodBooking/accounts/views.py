@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import User
+from .models import User,UserProfile
 from django.shortcuts import HttpResponse
 from .forms import UserForm
 from vendor.forms import VendorForm
@@ -53,12 +53,26 @@ def registerVendor(request):
 
     if request.method == 'POST':
         myform = UserForm(request.POST)
-        myvform = VendorForm(request.POST, request.FILES)
-        if myform.is_valid() and myvform.is_valid():
-            first_name = myform.cleaned_data()
+        vform = VendorForm(request.POST, request.FILES)
+        if myform.is_valid() and vform.is_valid():
+            first_name = myform.cleaned_data['first_name']
+            last_name = myform.cleaned_data['last_name']
+            username = myform.cleaned_data['username']
+            email = myform.cleaned_data['email']
+            password = myform.cleaned_data['password']
+            user = User.objects.create_user(first_name = first_name, last_name = last_name,username=username,email=email, password=password,)
+            user.role= User.VENDOR
+            user.save()
+            vendor = vform.save(commit=False)
+            vendor.user = user
+            user_profile = UserProfile.objects.get(user=user)
+            vendor.user_profile = user_profile
+            vendor.save()
+            messages.success(request, 'Your account has been created successfully, Please wait for your Approval')
+            return redirect('accounts:registerVendor')
         else:
             print(form.errors)
-            print(myvform.errors)
+            print(vform.errors)
 
 
 
