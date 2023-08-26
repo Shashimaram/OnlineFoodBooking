@@ -5,12 +5,10 @@
     100% { bottom: -100% }
 }
 
-.show-notification #messagesAnimation {
+.show-notification {
     position: fixed;
     bottom: 100%;
     right: 20px;
     animation-name: show-toast;
     animation-duration: 7s;
-    /* animation-timing-function: linear; */
-    /* animation-fill-mode: forwards; */
 }

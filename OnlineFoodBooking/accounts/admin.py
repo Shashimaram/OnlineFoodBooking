@@ -8,6 +8,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter =()
     fieldsets =()
     ordering =('-date_joined',)
+    list_display=['email', 'first_name', 'last_name', 'username','role','is_active']
 
 
 admin.site.register(User, CustomUserAdmin)
