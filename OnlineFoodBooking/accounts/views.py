@@ -8,6 +8,10 @@ from django.contrib import auth
 from .utils import detectUser
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.core.exceptions import PermissionDenied
+from .utils import send_verification_email,send_password_reset_email
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+
 # Create your views here.
 
 # def registerUser(request):
@@ -57,6 +61,12 @@ def registerUser(request):
                     first_name=frist_name, last_name=last_name, username=username, email=email, password=password)
                 user.role = User.CUSTOMER
                 user.save()
+
+                #  Send Verification Email
+                mail_subject = 'please activate your account'
+                email_template='accounts/email/account_verification_email.html'
+                send_verification_email(request,user, mail_subject,email_template)
+
                 print("user data saved successfully")
                 messages.success(request, "User data saved successfully")
                 return redirect('accounts:registerUser')
@@ -97,6 +107,10 @@ def registerVendor(request):
             user_profile = UserProfile.objects.get(user=user)
             vendor.user_profile = user_profile
             vendor.save()
+            #  Send Verification Email
+            mail_subject = 'please activate your account'
+            email_template='accounts/email/account_verification_email.html'
+            send_verification_email(request,user, mail_subject, email_template)
             messages.success(
                 request, 'Your account has been created successfully, Please wait for your Approval')
             return redirect('accounts:registerVendor')
@@ -105,6 +119,25 @@ def registerVendor(request):
             print(vform.errors)
 
     return render(request, template_name='accounts/registerVendor.html', context={'form': form, 'vform': vform})
+
+def activate(request,uidb64, token):
+    #Activate the user
+    try:
+        uid=urlsafe_base64_decode(uidb64)
+        user =User._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user =None
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request,'Congratulations! Your account is activated and varified.')
+        return redirect('accounts:myaccount')
+    else:
+        messages.error(request,'invalid token or activatation link')
+        return redirect('accounts:myaccount')
+
+
+
 
 
 def login(request):
@@ -150,3 +183,43 @@ def custDashboard(request):
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
     return render(request, 'accounts/vendorDashboard.html')
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email =  request.POST.get('email')
+        if User.objects.filter(email=email).exists():
+            user=User.objects.get(email__exact=email)
+
+            #send reset password
+            mail_subject = "Reset your password"
+            email_template='accounts/emails/reset_password_email.html'
+            send_password_reset_email(request, user, mail_subject, email_template)
+            messages.success(request, 'password reset link has been sent to your email address successfully')
+            return redirect('accounts:login')
+        else:
+            messages.error(request,'account doesnot exist')
+            return redirect('accounts:forgot_password')
+
+
+    return render(request, 'accounts/forgot_password.html')
+
+def reset_password_validate(request, uidb64, token):
+#Validate the password decode the token and user pk
+    try:
+        uid=urlsafe_base64_decode(uidb64)
+        user =User._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user =None
+    if user is not None and default_token_generator.check_token(user, token):
+        request.session['uid']=uid
+        messages.info(request,'please reset your password')
+
+
+
+
+
+    pass
+
+def reset_password(request):
+    return render(request, 'accounts/reset_password.html')

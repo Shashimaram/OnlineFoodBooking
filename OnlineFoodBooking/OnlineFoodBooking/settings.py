@@ -174,3 +174,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     messages.ERROR:'danger',
 # }
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST ='smtop.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT=587
+EMAIL_HOST_USER = 'smaramdev71@gmail.com'
+EMAIL_HOST_PASSWORD = 'Mwxps1117f#'
+DEFAULT_FROM_EMAIL ='foodonline Marketplace <smaramdev71@gmail.com>'
