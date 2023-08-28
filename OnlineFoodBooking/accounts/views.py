@@ -11,6 +11,7 @@ from django.core.exceptions import PermissionDenied
 from .utils import send_verification_email,send_password_reset_email
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
+from vendor.models import Vendor
 
 # Create your views here.
 
@@ -182,6 +183,8 @@ def custDashboard(request):
 @login_required(login_url='accounts:login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
+    vendor = Vendor.objects.get(user = request.user )
+    # context = {'vendor': vendor}
     return render(request, 'accounts/vendorDashboard.html')
 
 
@@ -229,7 +232,7 @@ def reset_password(request):
     if request.method == 'POST':
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
-        
+
         if password == confirm_password:
             pk =  request.session.get('uid')
             user= User.objects.get(pk=pk)
@@ -237,9 +240,9 @@ def reset_password(request):
             user.is_active=True
             user.save()
             messages.success(request,'password reset successful')
-            
+
         else:
             messages.error(request, 'password doesnot match')
             return redirect('reset_password')
-        
+
     return render(request, 'accounts/reset_password.html')
