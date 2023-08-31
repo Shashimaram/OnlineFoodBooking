@@ -42,15 +42,8 @@ def v_profile(request):
 
     print(request.user)
 
-    try:
-        profile = request.user.userprofile
-    except UserProfile.DoesNotExist:
-        raise Http404("User profile does not exist")
-
-    try:
-        vendor = request.user.vendor
-    except Vendor.DoesNotExist:
-        raise Http404("Vendor does not exist")
+    profile = get_object_or_404(UserProfile, user=request.user)
+    vendor = get_object_or_404(Vendor, user=request.user)
 
     if request.method == 'POST':
         profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
@@ -66,7 +59,10 @@ def v_profile(request):
                 messages.error(request, 'Error updating profile')
 
         else:
+            print(profile_form.errors)
+            print(vendor_form.errors)
             messages.error(request, 'Error updating profile')
+
 
     else:
         profile_form = UserProfileForm(instance=profile)

@@ -90,7 +90,7 @@ class User(AbstractBaseUser):
         return user_role
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank= True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank= True, null=True,default=None)
     profile_picture = models.ImageField(upload_to='users/profile_picture',blank=True, null=True)
     cover_picture = models.ImageField(upload_to='users/cover_picture',blank=True, null=True)
     address_line_1 = models.CharField(max_length=50, blank=True, null= True)
@@ -106,7 +106,7 @@ class UserProfile(models.Model):
 
     # def __str__(self): return self.user.email
     def __str__(self) -> str:
-        if self.user.email:
+        if self.user:
             return self.user.email
         else:
             return "user has no email"
