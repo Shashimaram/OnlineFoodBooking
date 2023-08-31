@@ -67,7 +67,10 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['username', 'first_name','last_name',]
 
     def __str__(self) -> str:
-        return self.email
+        if self.email:
+            return self.email
+        else:
+            return "user has no email"
 
     def has_perm(self, perm, obj = None):
         return self.is_admin
@@ -101,7 +104,12 @@ class UserProfile(models.Model):
     created_At = models.DateField(auto_now_add=True)
     modified_At = models.DateField(auto_now=True)
 
-    def __str__(self): return self.user.email
+    # def __str__(self): return self.user.email
+    def __str__(self) -> str:
+        if self.user.email:
+            return self.user.email
+        else:
+            return "user has no email"
 
     def full_address(self):
         return f'{self.address_line_1} {self.address_line_2}'

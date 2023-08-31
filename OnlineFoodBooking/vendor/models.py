@@ -22,7 +22,7 @@ class Vendor(models.Model):
             # update vendor status
             orig = Vendor.objects.get(pk=self.pk)
             if orig.is_approved != self.is_approved:
-                mail_template = "accounts/email/admin_aproval_email.html"
+                mail_template = "accounts/emails/admin_aproval_email.html"
                 context={
                     'user': self.user,
                     'is_approved': self.is_approved,
@@ -30,8 +30,8 @@ class Vendor(models.Model):
                 if self.is_approved == True:
                     # Send notification Email
                     mail_subject="Congratulations! Your restaurant has been approved"
-                    send_notification(mail_subject, mail_template, context)
+                    # send_notification(mail_subject, mail_template, context)
                 else:
                     mail_subject="Sorry, You are not elgible to pblish your restaurant on our website"
-                    send_notification(mail_subject, mail_template, context)
+                    # send_notification(mail_subject, mail_template, context)
         return super(Vendor, self).save(*args, **kwargs) # Call the real save() method
