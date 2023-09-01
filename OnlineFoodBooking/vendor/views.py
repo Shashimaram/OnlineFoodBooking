@@ -5,6 +5,8 @@ from accounts.forms import UserProfileForm
 from vendor.models import Vendor
 from django.contrib import messages
 from django.http import Http404
+from django.contrib.auth.decorators import login_required, user_passes_test
+from accounts.views import check_role_vendor
 
 # Create your views here.
 
@@ -38,6 +40,9 @@ from django.http import Http404
 #     }
 #     return render(request, 'vendor/vprofile.html', context)
 
+
+@login_required(login_url='accounts:login')
+@user_passes_test(check_role_vendor)
 def v_profile(request):
 
     print(request.user)
