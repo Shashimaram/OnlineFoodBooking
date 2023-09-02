@@ -23,4 +23,27 @@ function onPlaceChanged (){
         console.log('place name=>', place.name)
     }
     // get the address components and assign them to the fields
+
+    // console.log('place name=>', place.name)
+    var geocoder = new google.maps.Geocoder()
+    var address = document.getElementById('id_address').value
+
+    geocoder.geocode({'address': address}, function(resuls, status){
+        // console.log('resuls=>', resuls)
+        // console.log('status=>', status)
+        if (status === google.maps.GeocoderStatus.OK){
+            var latitude = resuls[0].geometry.location.lat();
+            var longitude = resuls[0].geometry.location.lng();
+
+            console.log('latitude=>', latitude)
+            console.log('longitude=>', longitude)
+
+
+            $('#id_latitude').val(latitude);
+            $('#id_longitude').val(longitude);
+
+
+        }
+    })
+    console.log(place.address_components)
 }
