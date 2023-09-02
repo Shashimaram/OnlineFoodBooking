@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
+                'accounts.context_processors.get_google_api'
             ],
         },
     },
@@ -183,3 +184,7 @@ EMAIL_PORT=587
 EMAIL_HOST_USER =config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL= config('DEFAULT_FROM_EMAIL')
+
+
+GOOGLE_API=config('GOOGLE_API')
+# GOOGLE_API='AIzaSyCplIEOf8BIU3KVQ4S-bthHImG3FxniqcA'
