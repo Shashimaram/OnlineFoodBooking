@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # Costom apps
     'accounts',
     'vendor',
+    'menu',
 ]
 
 MIDDLEWARE = [
