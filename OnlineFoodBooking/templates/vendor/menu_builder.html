@@ -17,9 +17,11 @@
                 <!-- My Restaurants Form Start -->
                 <h5 class="text-uppercase">Buid your Food menue</h5>
                 <hr>
+                <button class="btn btn-secondary" onclick="history.back()">Back</button>
+                <br>
                 <h6>Menu Categories</h6>
-
-                <a href="#" class="btn btn-success float-right m-1"><i class= 'fa fa-plus' aria-hidden='true'></i>Add Food</a>
+                {% if categories %}
+                <a href="{% url 'accounts:vendor:add_food' %}" class="btn btn-success float-right m-1"><i class= 'fa fa-plus' aria-hidden='true'></i>Add Food</a>
                 <a href="{% url 'accounts:vendor:add_category' %}" class="btn btn-info float-right m-1"><i class= 'fa fa-plus' aria-hidden='true'></i>Add Categories</a>
 
 
@@ -38,6 +40,11 @@
                     {% endfor %}
                   </tbody>
                 </table>
+                {% else %}
+                <h5 class="text-center">NO categories found<h5>
+                <a href="{% url 'accounts:vendor:add_category' %}" class="btn btn-success"><i class= 'fa fa-plus' aria-hidden='true'></i>Add Categories</a>
+                <div class="text-center"></div>
+                {% endif %}
 
                 <!-- My Restaurants Form End -->
               </div>
