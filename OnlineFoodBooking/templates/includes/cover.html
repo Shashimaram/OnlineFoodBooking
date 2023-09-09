@@ -11,7 +11,12 @@
                     <div class="company-info">
                         <div class="img-holder">
                             <figure>
+                                {% if vendor.user_profile.profile_picture %}
                                 <img src="{{ vendor.user_profile.profile_picture.url }}"alt="">
+                                {% else %}
+                                    <img src="{% static 'extra-images/listing-logo18.png' %}" alt="Profile picture">
+
+                                {% endif %}
                             </figure>
                         </div>
 
