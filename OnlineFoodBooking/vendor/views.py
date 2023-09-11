@@ -178,6 +178,7 @@ def edit_food(request,pk):
             print(form.errors)
     else:
         form = FooditemForm(instance=food)
+        form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
     context={'form':form, 'food':food}
     return render(request, 'vendor/edit_food.html', context=context)
 
