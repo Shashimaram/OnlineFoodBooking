@@ -12,9 +12,9 @@ from .utils import send_verification_email,send_password_reset_email
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from vendor.models import Vendor
+from django.template.defaultfilters import slugify
 
 # Create your views here.
-
 # def registerUser(request):
 #     return render(request, 'accounts/registration.html')
 
@@ -105,6 +105,7 @@ def registerVendor(request):
             user.save()
             vendor = vform.save(commit=False)
             vendor.user = user
+            vendor.vendor_slug= slugify(vform.cleaned_data['vendor_name'])+'-'+str(user.id)
             user_profile = UserProfile.objects.get(user=user)
             vendor.user_profile = user_profile
             vendor.save()
