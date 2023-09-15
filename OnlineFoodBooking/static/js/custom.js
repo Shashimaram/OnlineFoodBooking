@@ -38,11 +38,8 @@ function onPlaceChanged (){
             console.log('latitude=>', latitude)
             console.log('longitude=>', longitude)
 
-
             $('#id_latitude').val(latitude);
             $('#id_longitude').val(longitude);
-
-
         }
     });
     console.log(place.address_components)
@@ -63,16 +60,30 @@ function onPlaceChanged (){
                 $('#id_city').val(place.address_components[i].long_name);
             }
 
-
             if (place.address_components[i].types[j] == 'postal_code') {
                 $('#id_pin_code').val(place.address_components[i].long_name);
             }else{
             }
-
-
         }
-
     }
-
-
 }
+
+$(document).ready(function() {
+    $('.add_to_cart').on('click', function(e){
+        e.preventDefault();
+        food_id=$(this).attr('data-id');
+        url=$(this).attr('data-url');
+        data={
+            food_id:food_id,
+             url:url
+            }
+        $.ajax({
+            type:'GET',
+            url:url,
+            data:data,
+            success:function(response){
+                console.log(response)
+            }
+        })
+    })
+})
