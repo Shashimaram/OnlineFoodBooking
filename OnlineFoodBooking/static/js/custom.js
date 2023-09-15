@@ -89,9 +89,15 @@ $(document).ready(function() {
             data:data,
             success:function(response){
                 console.log(response)
-                if (response.status == 'Failed'){
+                if (response.status == 'login_required'){
+                    swal(response.message,'','info').then(function(){
+                        window.location='/accounts/login';
+                    })
                     console.log(response)
-                }else{
+                }else if (response.status == 'Failed'){
+                    swql(response.message,'','error')
+                }
+                else{
                     $('#cart-counter').html(response.cart_counter['cart_count'])
                     $('#qty-'+food_id).html(response.qty)
                 }
@@ -121,11 +127,17 @@ $(document).ready(function() {
                 url:url,
                 data:data,
                 success:function(response){
-                    var current_cart = response.cart_counter['cart_count'];
-                    var current_food = response.qty
                     console.log(response)
-                    $('#cart-counter').html(current_cart)
-                    $('#qty-'+food_id).html(current_food)
+                    if (response.status == 'login_required'){
+                        swal(response.message,'','info').then(function(){
+                            window.location='/accounts/login';
+                        })
+                    }else if (response.status == 'Failed'){
+                        swql(response.message,'','error')
+                    }else{
+                        $('#cart-counter').html(response.cart_counter['cart_count'])
+                        $('#qty-'+food_id).html(response.qty)
+                    }
                 }
             })
         })

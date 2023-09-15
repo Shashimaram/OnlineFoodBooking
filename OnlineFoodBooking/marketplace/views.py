@@ -60,15 +60,15 @@ def add_to_cart(request,item_id):
                     return JsonResponse({'status':"Success","mssage":"Increase the cart Quantity",'cart_counter':get_cart_counter(request),'qty':chkCart.quantity})
                 except:
                     chkCart = Cart.objects.create(user=request.user, fooditem=fooditem, quantity=1)
-                    return JsonResponse({'status':"Success","mssage":"Addes the food to the cart",'qty':chkCart.quantity,'cart_counter':get_cart_counter(request)})
+                    return JsonResponse({'status':"Success","message":"Addes the food to the cart",'qty':chkCart.quantity,'cart_counter':get_cart_counter(request)})
 
             except:
-                return JsonResponse({'status':"Failed","mssage":"This Fooditem is not available"})
+                return JsonResponse({'status':"Failed","message":"This Fooditem doesnot exist"})
 
         else:
-            return JsonResponse({'status':"Failed","mssage":"Invalid Request"})
+            return JsonResponse({'status':"Failed","message":"Invalid Request"})
     else:
-        return JsonResponse({'status':"Failed","mssage":"Login to continue"})
+        return JsonResponse({'status':"login_required","message":" Please Login to continue"})
 
 
 def decrease_cart(request,item_id):
@@ -87,18 +87,18 @@ def decrease_cart(request,item_id):
                         chkCart.delete()
                         chkCart.quantity = 0
 
-                    return JsonResponse({'status':"Success","mssage":"Increase the cart Quantity",'cart_counter':get_cart_counter(request),'qty':chkCart.quantity})
+                    return JsonResponse({'status':"Success","message":"Increase the cart Quantity",'cart_counter':get_cart_counter(request),'qty':chkCart.quantity})
                 except:
                     # chkCart = Cart.objects.create(user=request.user, fooditem=fooditem, quantity=1)
-                    return JsonResponse({'status':"Success","mssage":"we dont have item in your cart",'cart_counter':get_cart_counter(request)})
+                    return JsonResponse({'status':"Success","message":"you dont have item in your cart",'cart_counter':get_cart_counter(request)})
 
             except:
-                return JsonResponse({'status':"Failed","mssage":"This Fooditem is not available"})
+                return JsonResponse({'status':"Failed","message":"This Fooditem is not available"})
 
         else:
-            return JsonResponse({'status':"Failed","mssage":"Invalid Request"})
+            return JsonResponse({'status':"Failed","message":"Invalid Request"})
     else:
-        return JsonResponse({'status':"Failed","mssage":"Login to continue"})
+        return JsonResponse({'status':"login_required","message":"Login to continue"})
 
 # def total_cart(request):
 #     if request.user.is_authenticated:
