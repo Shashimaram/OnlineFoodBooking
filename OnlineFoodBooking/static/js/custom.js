@@ -82,7 +82,11 @@ $(document).ready(function() {
             url:url,
             data:data,
             success:function(response){
+                var current_cart = response.cart_counter['cart_count'];
+                var current_food = response.qty
                 console.log(response)
+                $('#cart-counter').html(current_cart)
+                $('#qty-'+food_id).html(current_food)
             }
         })
     })

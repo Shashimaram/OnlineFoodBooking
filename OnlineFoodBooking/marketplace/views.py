@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 from django.http import HttpResponse,JsonResponse
 from .models import Cart
+from .context_processors import get_cart_counter
 # Create your views here.
 
 
@@ -56,10 +57,10 @@ def add_to_cart(request,item_id):
                     chkCart = Cart.objects.get(user=request.user, fooditem=fooditem)
                     chkCart.quantity += 1
                     chkCart.save()
-                    return JsonResponse({'status':"Success","mssage":"Increase the cart Quantity"})
+                    return JsonResponse({'status':"Success","mssage":"Increase the cart Quantity",'cart_counter':get_cart_counter(request),'qty':chkCart.quantity})
                 except:
                     chkCart = Cart.objects.create(user=request.user, fooditem=fooditem, quantity=1)
-                    return JsonResponse({'status':"Success","mssage":"Addes the food to the cart"})
+                    return JsonResponse({'status':"Success","mssage":"Addes the food to the cart",'qty':chkCart.quantity,'cart_counter':get_cart_counter(request)})
 
             except:
                 return JsonResponse({'status':"Failed","mssage":"This Fooditem is not available"})
