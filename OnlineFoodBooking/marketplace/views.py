@@ -31,11 +31,17 @@ def vendor_detail(request,vendor_slug):
     )
     fooditem = Fooditem.objects.filter(vendor=vendor)
 
+    if request.user.is_authenticated:
+        cart_items = Cart.objects.filter(user = request.user)
+    else:
+        cart_items = None
+
     context={
         "vendor_slug":vendor_slug,
         "vendor":vendor,
         "categories":categories,
         "fooditem":fooditem,
+        "cart_items":cart_items,
         }
     return render(request, 'marketplace/vendor_details.html', context=context)
 
