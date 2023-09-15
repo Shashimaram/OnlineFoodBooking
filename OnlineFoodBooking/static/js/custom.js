@@ -69,6 +69,12 @@ function onPlaceChanged (){
 }
 
 $(document).ready(function() {
+
+    // $('#cart-counter').on('load', function(e){
+    //     e.preventDefault();
+    // })
+
+    // adding items to cart
     $('.add_to_cart').on('click', function(e){
         e.preventDefault();
         food_id=$(this).attr('data-id');
@@ -82,11 +88,13 @@ $(document).ready(function() {
             url:url,
             data:data,
             success:function(response){
-                var current_cart = response.cart_counter['cart_count'];
-                var current_food = response.qty
                 console.log(response)
-                $('#cart-counter').html(current_cart)
-                $('#qty-'+food_id).html(current_food)
+                if (response.status == 'Failed'){
+                    console.log(response)
+                }else{
+                    $('#cart-counter').html(response.cart_counter['cart_count'])
+                    $('#qty-'+food_id).html(response.qty)
+                }
             }
         })
     })
@@ -95,8 +103,30 @@ $(document).ready(function() {
     $('.item_qty').each(function(){
         var the_id = $(this).attr('id')
         var qty = $(this).attr('data-qty');
-        console.log(qty);
-
+        // console.log(qty);
         $('#'+the_id).html(qty);
     })
+
+        // decrease items to cart
+        $('.decrease_cart').on('click', function(e){
+            e.preventDefault();
+            food_id=$(this).attr('data-id');
+            url=$(this).attr('data-url');
+            data={
+                food_id:food_id,
+                 url:url
+                }
+            $.ajax({
+                type:'GET',
+                url:url,
+                data:data,
+                success:function(response){
+                    var current_cart = response.cart_counter['cart_count'];
+                    var current_food = response.qty
+                    console.log(response)
+                    $('#cart-counter').html(current_cart)
+                    $('#qty-'+food_id).html(current_food)
+                }
+            })
+        })
 })
