@@ -141,4 +141,36 @@ $(document).ready(function() {
                 }
             })
         })
+
+
+        // decrease items to cart
+        $('.delete_cart').on('click', function(e){
+            e.preventDefault();
+            food_id=$(this).attr('data-id');
+            url=$(this).attr('data-url');
+            data={
+                food_id:food_id,
+                 url:url
+                }
+            $.ajax({
+                type:'GET',
+                url:url,
+                data:data,
+                success:function(response){
+                    console.log(response)
+                    if (response.status == 'login_required'){
+                        swal(response.message,'','info').then(function(){
+                            window.location='/accounts/login';
+                        })
+                    }else if (response.status == 'Failed'){
+                        swql(response.message,'','error')
+                    }else{
+                        $('#cart-counter').html(response.cart_counter['cart_count'])
+                        $('#qty-'+food_id).html(response.qty)
+                    }
+                }
+            })
+        })
+
+
 })

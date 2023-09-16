@@ -26,7 +26,7 @@ def vendor_detail(request,vendor_slug):
     vendor = get_object_or_404(Vendor,vendor_slug=vendor_slug)
     categories = Category.objects.filter(vendor=vendor).prefetch_related(
         Prefetch(
-            'fooditems',
+       'fooditems',
             queryset=Fooditem.objects.filter(is_available=True)
         )
     )
@@ -100,8 +100,25 @@ def decrease_cart(request,item_id):
     else:
         return JsonResponse({'status':"login_required","message":"Login to continue"})
 
-# def total_cart(request):
-#     if request.user.is_authenticated:
-#         chkCart = Cart.objects.get(user=request.user)
-#         cart = chkCart.quantity
-#         return JsonResponse({'status':"success",cart:})
+
+def cart(request):
+    cart_items = Cart.objects.filter(user = request.user)
+    context={'cart_items':cart_items}
+    return render(request,'marketplace/cart.html',context=context)
+
+
+def delete_cart(request, cart_id):
+    if user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+                # Check if the cart item exist
+                cart_item = cart.objects.get(user=request.user, id=cart_id)
+                if cart_item:
+                    cart_item.delete()
+                    return JsonResponse({"status":"success","message":"cart item has been deleted", "cart_counter":get_cart_counter(request)})
+            except:
+                    return JsonResponse({"status":"failed","message":"cart item does not exist"})
+
+
+        else:
+            return JsonResponse({"status":"failed","message":"invalid request"})
