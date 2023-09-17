@@ -6,6 +6,7 @@ from django.db.models import Prefetch
 from django.http import HttpResponse,JsonResponse
 from .models import Cart
 from .context_processors import get_cart_counter
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -101,6 +102,7 @@ def decrease_cart(request,item_id):
         return JsonResponse({'status':"login_required","message":"Login to continue"})
 
 
+@login_required(login_url='/login')
 def cart(request):
     cart_items = Cart.objects.filter(user = request.user)
     context={'cart_items':cart_items}
@@ -108,17 +110,15 @@ def cart(request):
 
 
 def delete_cart(request, cart_id):
-    if user.is_authenticated:
+    if request.user.is_authenticated:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
                 # Check if the cart item exist
-                cart_item = cart.objects.get(user=request.user, id=cart_id)
+                cart_item = Cart.objects.get(user=request.user, id=cart_id)
                 if cart_item:
                     cart_item.delete()
                     return JsonResponse({"status":"success","message":"cart item has been deleted", "cart_counter":get_cart_counter(request)})
             except:
                     return JsonResponse({"status":"failed","message":"cart item does not exist"})
-
-
         else:
             return JsonResponse({"status":"failed","message":"invalid request"})
