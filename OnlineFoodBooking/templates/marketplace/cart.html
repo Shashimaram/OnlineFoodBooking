@@ -56,8 +56,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 {% comment %} Your Order section {% endcomment %}
                 <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                     <div class="tabs-holder horizontal">
@@ -73,7 +71,7 @@
                                                 subtotal
                                                 <span class="price float-right">
                                                     <span class="currency">$</span>
-                                                    <span id="subtotal">0</span>
+                                                    <span id="subtotal">{{ subtotal }}</span>
                                                 </span>
 
                                             </li>
@@ -81,7 +79,7 @@
                                                 Tax
                                                 <span class="price float-right">
                                                     <span class="currency">$</span>
-                                                    <span id="tax">0</span>
+                                                    <span id="tax">{{ tax }}</span>
                                                 </span>
                                             </li>
 
@@ -89,10 +87,9 @@
                                                 Total
                                                 <span class="price float-right">
                                                     <span class="currency">$</span>
-                                                    <span id="total">0</span>
+                                                    <span id="total">{{ grand_total }}</span>
                                                 </span>
                                             </li>
-
                                         </ul>
                                     </div>
                             </div>

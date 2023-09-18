@@ -100,6 +100,14 @@ $(document).ready(function() {
                 else{
                     $('#cart-counter').html(response.cart_counter['cart_count'])
                     $('#qty-'+food_id).html(response.qty)
+                    console.log(response);
+
+                    // subtotal, tax, grand total
+                    applyCartAmounts(
+                        response.cart_amounts["subtotal"],
+                        response.cart_amounts["tax"],
+                        response.cart_amounts["grand_total"],
+                    )
                 }
             }
         })
@@ -137,9 +145,15 @@ $(document).ready(function() {
                 }else{
                     $('#cart-counter').html(response.cart_counter['cart_count'])
                     $('#qty-'+food_id).html(response.qty)
+                    applyCartAmounts(
+                        response.cart_amounts["subtotal"],
+                        response.cart_amounts["tax"],
+                        response.cart_amounts["grand_total"],
+                    )
                     if(window.location.pathname=='/cart/'){
                         removeItemElement(response.qty,cart_id);
                         checkEmptyCart();
+
 
                     }
 
@@ -167,6 +181,12 @@ $(document).ready(function() {
 
                     swal(response.status, response.message, 'success');
 
+                    applyCartAmounts(
+                        response.cart_amounts["subtotal"],
+                        response.cart_amounts["tax"],
+                        response.cart_amounts["grand_total"],
+                    )
+
                     // Move the removeItemElement function call inside the success callback
                     removeItemElement(0, cart_id);
                     checkEmptyCart();
@@ -189,6 +209,14 @@ $(document).ready(function() {
         var cart_counter = document.getElementById("cart-counter").innerHTML
         if (cart_counter == 0) {
             document.getElementById("empty-cart").style.display = 'block';
+        }
+    }
+
+    function applyCartAmounts(subtotal,tax,grand_total) {
+        if (window.location.pathname == "/cart/") {
+            $("#subtotal").html(subtotal)
+            $("#total").html(grand_total)
+            $("#tax").html(tax)
         }
     }
 });
