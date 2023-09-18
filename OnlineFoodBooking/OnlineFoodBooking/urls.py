@@ -28,6 +28,8 @@ urlpatterns = [
     path('',home, name='home'),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('marketplace/', include('marketplace.urls')),
+    #search
+    path("search/", marketplace_views.search, name="search")
 
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

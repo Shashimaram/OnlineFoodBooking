@@ -54,7 +54,7 @@
                 {% else %}
                 <h5 class="text-center"> No Food Items Found </h5>
                 <div class="text-center">
-                    <a href="#" class="btn btn-success">Add Food</a>
+                    <a href="{% url 'accounts:vendor:add_food' %}" class="btn btn-success">Add Food</a>
                 </div>
                 {% endif %}
                 <!-- My Restaurants Form End -->
