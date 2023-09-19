@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404,redirect
-from .forms import VendorForm
+from .forms import VendorForm, OpeningHourForm
 from accounts.models import UserProfile
 from accounts.forms import UserProfileForm
 from vendor.models import Vendor
@@ -8,7 +8,8 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from accounts.views import check_role_vendor
 from menu.models import Category,Fooditem
-
+from .models import Vendor, OpeningHour
+from django.http import HttpResponse
 from django.utils.text import slugify
 # import Forms
 
@@ -136,7 +137,6 @@ def delete_category(request,pk):
     messages.success(request,'Category deleted Successfully')
     return redirect('accounts:vendor:menu_builder')
 
-
 @login_required(login_url='accounts:login')
 @user_passes_test(check_role_vendor)
 def add_food(request):
@@ -160,8 +160,6 @@ def add_food(request):
     context={'form':form}
     return render(request, 'vendor/add_food.html', context=context)
 
-
-
 @login_required(login_url='accounts:login')
 @user_passes_test(check_role_vendor)
 def edit_food(request,pk):
@@ -184,7 +182,6 @@ def edit_food(request,pk):
     context={'form':form, 'food':food}
     return render(request, 'vendor/edit_food.html', context=context)
 
-
 @login_required(login_url='accounts:login')
 @user_passes_test(check_role_vendor)
 def delete_food(request,pk):
@@ -192,3 +189,18 @@ def delete_food(request,pk):
     food.delete()
     messages.success(request,'Category deleted Successfully')
     return redirect('accounts:vendor:menu_builder')
+
+# @login_required(login_url='accounts:login')
+# @user_passes_test(check_role_vendor)
+def opening_hours(request):
+    opening_hours = OpeningHour.objects.filter(vendor=get_vendor(request))
+    form = OpeningHourForm()
+    context = {
+        'opening_hours': opening_hours,
+        'form': form,
+        }
+
+    return render(request, 'vendor/opening_hours.html' , context=context)
+
+def add_opening_hours(request):
+    return HttpResponse("add opening hours")

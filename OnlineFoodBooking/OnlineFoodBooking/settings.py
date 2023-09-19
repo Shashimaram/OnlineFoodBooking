@@ -192,4 +192,7 @@ DEFAULT_FROM_EMAIL= config('DEFAULT_FROM_EMAIL')
 
 
 GOOGLE_API=config('GOOGLE_API')
-# GOOGLE_API='AIzaSyCplIEOf8BIU3KVQ4S-bthHImG3FxniqcA'
+
+# # GDAL_LIBRARY_PATH and GEOS_LIBRARY_PATH need to point to the respective libraries installed by Homebrew
+# GDAL_LIBRARY_PATH = '/opt/homebrew/Cellar/gdal/3.7.2/lib/libgdal.33.3.7.2.dylib'
+# GEOS_LIBRARY_PATH = '/opt/homebrew/Cellar/geos/3.12.0/lib/libgeos_c.dylib'

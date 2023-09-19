@@ -3,6 +3,10 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+
+
+# from django.contrib.gis.db import models as gismodels
+# from django.contrib.gis.geos import Point
 # Create your models here.
 
 class UserManager(BaseUserManager):

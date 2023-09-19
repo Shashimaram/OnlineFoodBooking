@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import User, UserProfile
 from accounts.utils import send_notification
+from datetime import time
 # Create your models here.
 
 class Vendor(models.Model):
@@ -35,3 +36,31 @@ class Vendor(models.Model):
                     mail_subject="Sorry, You are not elgible to pblish your restaurant on our website"
                     # send_notification(mail_subject, mail_template, context)
         return super(Vendor, self).save(*args, **kwargs) # Call the real save() method
+
+
+DAYS=[
+    (1,("Monday")),
+    (2,("Tuesday")),
+    (3,("Wednesday")),
+    (4,("Thursday")),
+    (5,("Friday")),
+    (6,("Saturday")),
+    (7,("Sunday")),
+]
+
+HOURS_OF_DAYS= [(time(h,m).strftime('%I:%M %p'),time(h,m).strftime('%I:%M %p')) for h in range(0, 24) for m in (0,30)]
+
+
+class OpeningHour(models.Model):
+    vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
+    day = models.IntegerField(choices=DAYS)
+    from_hours = models.CharField(choices=HOURS_OF_DAYS, max_length=10, blank=True)
+    to_hours = models.CharField(default=False, choices=HOURS_OF_DAYS, max_length= 10, blank=True)
+    is_closed = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('day','from_hours')
+        unique_together = ('day','from_hours','to_hours')
+
+    def __str__(self) -> str:
+        return self.get_day_display()

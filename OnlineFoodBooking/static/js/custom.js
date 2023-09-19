@@ -192,8 +192,8 @@ $(document).ready(function() {
                     checkEmptyCart();
                 }
             }
-        });
-    });
+        })
+    })
 
     function removeItemElement(cartitemqty, cart_id) {
 
@@ -219,4 +219,7 @@ $(document).ready(function() {
             $("#tax").html(tax)
         }
     }
+
+
+    // Document ready close
 });
