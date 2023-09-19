@@ -24,19 +24,17 @@
                 {% endfor %} {% endcomment %}
 
                 <table class="table opening_hours" style="width:500px; border:none !important">
-                    <tbody>
+                    <tbody class="open_table">
                         {% for hour in opening_hours %}
-                        <tr>
+                        <tr id="hour-{{ hour.id }}">
                             <td><b>{{ hour }}</b></td>
                             <td><b>{% if hour.is_closed %}Closed {% else %}{{ hour.from_hours}} {{ hour.to_hours }}{% endif %}</td>
-                             <td><a href="#">Remove</a></td>
+                             <td><a href="#" class="remove_hour" data-url="{% url 'accounts:vendor:remove_open_hours' hour.id %}" >Remove</a></td>
                         </tr>
                         {% endfor %}
 
                     </tbody>
                 </table>
-
-
                 <form id="opening_hours">
                     {% csrf_token %}
                     <div class="row">
@@ -53,6 +51,7 @@
                             {{ form.is_closed }} Set as Closed
                         </div>
                         <div class="col-md-3">
+                            <input type = "hidden" value="{% url 'accounts:vendor:add_open_hours' %}" id="add_hour_url">
                             <button class="add_hour btn btn-success ">Add Hours</button>
                         </div>
                     </div>
@@ -66,5 +65,6 @@
     </div>
   </div>
   <!-- Main Section End -->
-  {% include "includes/alerts.html" %} {% endblock content %}
+  {% include "includes/alerts.html" %}
+  {% endblock content %}
 </body>
