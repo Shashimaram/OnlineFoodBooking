@@ -1,4 +1,4 @@
-from .models import Cart
+from .models import Cart,Tax
 from menu.models import Fooditem
 
 def get_cart_counter(request):
@@ -20,13 +20,28 @@ def get_cart_amounts(request):
     subtotal = 0
     tax=3
     grand_total = 0
+    tax_dict = {}
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
         for item in cart_items:
             fooditem=Fooditem.objects.get(pk = item.fooditem.id)
             subtotal +=(fooditem.price * item.quantity) # subtotal = subtotal + (fooditem.price * item.quantity)
 
+        get_tax = Tax.objects.filter(is_active=True)
+
+        for i in get_tax:
+            tax_type = i.tax_type
+            tax_percent = i.tax_percentage
+            tax_amount = round((tax_percent * subtotal)/100,2)
+            tax_dict.update({tax_type: {tax_percent: tax_amount}})
+
+        #{GST:{5.00,2.95},SGST:{5.00,)}
+
+        for key in tax_dict.values():
+            for x in key.values():
+                tax = tax + x
+
+        tax = sum(x for key in tax_dict.values() for x in key.values())
+
         grand_total = subtotal + tax
-
-
-    return dict(grand_total=grand_total, tax=tax, subtotal=subtotal)
+    return dict(grand_total=grand_total, tax=tax, subtotal=subtotal,tax_dict=tax_dict)

@@ -90,12 +90,12 @@ $(document).ready(function() {
             success:function(response){
 
                 if (response.status == 'login_required'){
-                    swal(response.message,'','info').then(function(){
+                    console.log(response.message,'','info').then(function(){
                         window.location='/accounts/login';
                     })
 
                 }else if (response.status == 'Failed'){
-                    swql(response.message,'','error')
+                    console.log(response.message,'','error')
                 }
                 else{
                     $('#cart-counter').html(response.cart_counter['cart_count'])
@@ -137,11 +137,11 @@ $(document).ready(function() {
             data:data,
             success:function(response){
                 if (response.status == 'login_required'){
-                    swal(response.message,'','info').then(function(){
+                    console.log(response.message,'','info').then(function(){
                         window.location='/accounts/login';
                     })
                 }else if (response.status == 'Failed'){
-                    swql(response.message,'','error')
+                    console.log(response.message,'','error')
                 }else{
                     $('#cart-counter').html(response.cart_counter['cart_count'])
                     $('#qty-'+food_id).html(response.qty)
@@ -175,11 +175,11 @@ $(document).ready(function() {
             url: url,
             success: function(response){
                 if (response.status == 'failed'){
-                    swal(response.message, '', 'error');
+                    console.log(response.message, '', 'error');
                 } else {
                     $('#cart-counter').html(response.cart_counter['cart_count']);
 
-                    swal(response.status, response.message, 'success');
+                    console.log(response.status, response.message, 'success');
 
                     applyCartAmounts(
                         response.cart_amounts["subtotal"],

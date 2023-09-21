@@ -58,7 +58,7 @@ $(document).ready(function(){
             })
             // console.log("Add the entry");
         }else{
-            swal("please fill all the fields"," ",'info')
+            console.log("please fill all the fields"," ",'info')
         }
     });
 
