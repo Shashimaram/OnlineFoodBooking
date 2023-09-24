@@ -33,5 +33,8 @@ urlpatterns = [
 
     path("customers/",include('customers.urls')),
 
+    # Orders Checkout
+    path('checkout/',marketplace_views.checkout, name="checkout"),
+
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
