@@ -144,17 +144,23 @@ def activate(request,uidb64, token):
 
 def login(request):
     if request.user.is_authenticated:
+        print("user authenticated")
         messages.warning(request, 'User is already logged in!')
         return redirect('accounts:myaccount')
     elif request.method == 'POST':
+        print("user posteed")
         email = request.POST['email']
         password = request.POST['password']
         user = auth.authenticate(email=email, password=password)
+        print(user)
         if user is not None:
+            print("user objects is not none")
+            print("user: ",user)
             auth.login(request, user)
             messages.success(request, 'you are logged in successfully')
             return redirect('accounts:myaccount')
         else:
+            print("user object is none")
             messages.error(request, 'invalid email or password')
 
             return redirect('accounts:login')
@@ -177,7 +183,7 @@ def myAccount(request):
 
 @login_required(login_url='accounts:login')
 @user_passes_test(check_role_customer)
-def custDashboard(request):
+def custDashboard(request):\
     return render(request, 'accounts/custDashboard.html')
 
 

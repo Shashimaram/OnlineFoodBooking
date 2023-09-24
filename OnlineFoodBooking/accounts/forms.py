@@ -29,3 +29,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude=['User','created_At','modified_At']
+class UserInfoform(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name','phone_number']

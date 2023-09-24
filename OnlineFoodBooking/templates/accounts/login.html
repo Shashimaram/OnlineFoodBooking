@@ -1,58 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-		<!-- Main Section Start -->
-		<div class="main-section">
-			<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 60px;margin-bottom: 0px;">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-							<div class="user-dashboard loader-holder"  style="width:450px; min-height:auto;">
-								<div class="user-holder">
+<div class="main-section">
+    <div class="page-section nopadding cs-nomargin" style="margin-top: 0px; padding-top: 60px; padding-bottom: 60px; margin-bottom: 0px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder" style="width: 450px; min-height: auto;">
+                        <div class="user-holder">
                             <h4 class="text-center" style="margin-bottom: 0;">SIGN IN</h4>
-                            <p class="text-center">Order Food from your favourate Restaurant</p>
+                            <p class="text-center">Order Food from your favorite Restaurant</p>
                             <hr>
                             <div id="restaurant-sets-holder">
-                                <form action= '.' class="form-fields-set foodbakery-dev-restaurant-form" method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
+                                <form action="{% url 'accounts:login' %}" class="form-fields-set foodbakery-dev-restaurant-form" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
                                     <ul class="register-add-restaurant-tab-container restaurant-information-tab-container">
                                         <li>
                                             <div class="row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="row">
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                <div class="field-holder">
-                                                                    <label>Email Address</label>
-                                                                    <input type="email" class="form-control" placeholder="Email Address" name="email">
-                                                                </div>
-                                                            </div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                <div class="field-holder">
-                                                                    <label>Password</label>
-                                                                    <input type="password" name="password" placeholder="Enter your Password" class="form-control">
-                                                                </div>
-                                                            </div>
+                                                    <div class="field-holder">
+                                                        <label for="email">Email Address</label>
+                                                        <input type="email" id="email" class="form-control" placeholder="Email Address" name="email" required>
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
-                                            {% comment %} {% for field in form %}
-                                                {% if field.errors %}
-                                                {% for error in field.errors %}
-                                                <li style="colour:red;">{{ error }}</li>
-                                                {% endfor %}
-                                                {% endif %}
-                                            {% endfor %} {% endcomment %}
-                                            {% include "includes/errors.html" %}
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label for="password">Password</label>
+                                                        <input type="password" id="password" name="password" placeholder="Enter your Password" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </li>
-                                        <li style='colour:red'>{{ form.non_field_errors }}</li>
+                                        <li style='color: red;'>{{ form.non_field_errors }}</li>
                                         <li>
-                                        {% include "includes/alerts.html" %}
+                                            {% include "includes/alerts.html" %}
                                             <div class="row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="field-holder">
                                                         <div class="payment-holder">
-                                                            <input type="submit" value="Submit" id="btn-next-restaurant-information" class="bgcolor">
+                                                            <input type="submit" value="Submit" id="btn-next-restaurant-information" class="btn btn-primary">
                                                             <a href="{% url 'accounts:forgot_password' %}" class="float-right">Forgot Password</a>
                                                         </div>
                                                     </div>
@@ -63,10 +53,10 @@
                                 </form>
                             </div>
                         </div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
