@@ -24,7 +24,7 @@ This is an online food booking app that allows customers to browse and order foo
 - APIs: Google Maps API for location-based restaurant search
 
 # Getting Started
-- Clone the repository: git clone https://github.com/your-username/food-booking-app.git
+- Clone the repository: git clone https://github.com/Shashimaram/OnlineFoodBooking.git
 - Install dependencies: pip install -r requirements.txt
 - Set up the database: python manage.py migrate
 - Create a superuser account: python manage.py createsuperuser
