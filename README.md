@@ -25,7 +25,6 @@ This is an online food booking app that allows customers to browse and order foo
 
 # Getting Started
 - Clone the repository: git clone https://github.com/Shashimaram/OnlineFoodBooking.git
-- Install dependencies: pip install -r requirements.txt
 - Set up the database: python manage.py migrate
 - Create a superuser account: python manage.py createsuperuser
 - Run the development server: python manage.py runserver
