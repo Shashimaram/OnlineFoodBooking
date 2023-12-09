@@ -1,11 +1,11 @@
 ### Online Food Booking App
 
 
-##Overview
+## Overview
 This is an online food booking app that allows customers to browse and order food from various restaurants. The app is built using HTML, CSS, JS for the frontend, and Django, Python, and ORM for the backend.
 
-##Features
-#Customer Account
+## Features
+# Customer Account
 - Browse Restaurants: Customers can search for restaurants based on their location using Google Maps API. This makes it easy for users to find nearby restaurants.
 - Add to Cart: Customers can add their favorite food items to the cart for easy checkout.
 - Checkout: The app supports a seamless checkout process, allowing customers to review their order and proceed to payment.
